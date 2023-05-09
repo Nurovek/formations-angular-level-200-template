@@ -7,6 +7,11 @@ import { AppComponent } from './app.component';
 import { GameModule } from './features/game/game.module';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { SideBarComponent } from './shared/components/side-bar/side-bar.component';
+import { SearchBarComponent } from './features/search/search-bar/search-bar.component';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '../store';
+import { EffectsModule } from '@ngrx/effects';
+import { GamesEffect } from './features/game/store/effects';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,14 @@ import { SideBarComponent } from './shared/components/side-bar/side-bar.componen
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    GameModule
+    GameModule,
+    SearchBarComponent,
+    StoreModule.forRoot(reducers, {}),
+    // Chargement des Eager modules (les 20%)
+    EffectsModule.forRoot([
+      // A plutôt faire dans le GameModule (approche itérative)
+      GamesEffect
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent, HeaderComponent, SideBarComponent]

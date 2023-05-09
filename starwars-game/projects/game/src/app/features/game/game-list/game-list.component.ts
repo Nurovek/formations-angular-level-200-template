@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameDto } from '../../../core/models/game.dto';
-import { GameService } from '../services/game.service';
+import { Store, select } from '@ngrx/store';
+import { requestToLoadAllGamesAction } from '../store/actions';
+import { selectAllSucceeded } from '../store/selectors';
 
 @Component({
   selector: 'game-game-list',
@@ -11,11 +13,22 @@ import { GameService } from '../services/game.service';
 export class GameListComponent implements OnInit {
   games: GameDto[] = [];
   searchItem = '';
+  private readonly store = inject(Store);
+  searchInput$ = new Observable<string>;
 
-  constructor(private gameService: GameService) { }
+  // games$ = this.store.select(selectAllGames);
+  games$ = this.store.pipe(select(selectAllSucceeded));
+
+  // constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
-    this.gameService.getAll(3).subscribe(items => this.games = items);
+    // J'envoie l'information qui dit que je veux mettre à jour les données
+    // Mais c'est l'effect qui fait la récupération des données
+    // EN GROS : je demande de mettre le state à jour, mais cette Action-là NE MET PAS A JOUR
+    this.store.dispatch(requestToLoadAllGamesAction());
   }
+
+
+
 
 }

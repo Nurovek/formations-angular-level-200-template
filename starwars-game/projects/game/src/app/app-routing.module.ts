@@ -31,7 +31,7 @@ const routes: Routes = [{
   // preloadingStrategy: PreloadAllModules. Moins écoconception, mais plus rapide
   // Design Pattern strategy
   // INFO: implémentation Angular 13-. TODO: Angular 14+
-  imports: [RouterModule.forRoot(routes, {enableTracing: isDevMode(), preloadingStrategy: WithFlagLazyLoadingModuleStrategy})],
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: WithFlagLazyLoadingModuleStrategy})],
   exports: [RouterModule],
   providers: [
     WithFlagLazyLoadingModuleStrategy
